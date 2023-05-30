@@ -32,7 +32,20 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+        //ユーザーが所有する最初のフォルダを取得
+        $folder = Auth::user()->folders()->first();
+
+        if ($folder) {
+            // フォルダが存在すれば、そのフォルダのタスク一覧にリダイレクト
+            return redirect()->route('tasks.index', ['id' => $folder->id]);
+        } else {
+            // フォルダが存在しなければ、ダッシュボード（または任意のページ）にリダイレクト
+            //return redirect()->intended(RouteServiceProvider::HOME);
+
+            // フォルダが存在しなければ、フォルダ作成ページにリダイレクト
+            return redirect()->route('folders.create');
+        }
+        //  return redirect()->intended(RouteServiceProvider::HOME);
     }
 
     /**

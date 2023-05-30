@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,12 +15,29 @@
     <header>
         <nav class="my-navbar">
             <a class="my-navbar-brand" href="/">ToDo App</a>
+
+            @auth
+            <div class="my-navbar-item">
+                ユーザー名：{{ Auth::user()->name }}
+
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit">
+                        Log Out
+                    </button>
+                </form>
+            </div>
+            @endauth
+
         </nav>
+
     </header>
     <main>
         @yield('content')
     </main>
     @yield('scripts')
+
 </body>
+
 
 </html>
